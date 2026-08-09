@@ -504,11 +504,39 @@ const WORDS = [
 ];
 
 // ── Speech ──
+let viVoice = null;
+
+function initVoices() {
+  const voices = speechSynthesis.getVoices();
+  if (!voices.length) return;
+  // Google tiếng Việt を優先、なければ vi- で始まる任意の音声
+  viVoice =
+    voices.find(v => v.lang.startsWith('vi') && v.name.toLowerCase().includes('google')) ||
+    voices.find(v => v.lang.startsWith('vi')) ||
+    null;
+
+  const warning = document.getElementById('voiceWarning');
+  if (!warning) return;
+  if (viVoice) {
+    warning.hidden = true;
+  } else {
+    warning.hidden = false;
+    warning.textContent =
+      '⚠️ ベトナム語音声（vi-VN）が見つかりません。Chrome を使用するか、OS にベトナム語音声をインストールしてください。';
+  }
+}
+
+if (window.speechSynthesis) {
+  speechSynthesis.addEventListener('voiceschanged', initVoices);
+  initVoices();
+}
+
 function speak(text, btn) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const utt = new SpeechSynthesisUtterance(text);
   utt.lang = 'vi-VN';
+  if (viVoice) utt.voice = viVoice;
   utt.rate = 0.85;
   if (btn) {
     btn.classList.add('speaking');

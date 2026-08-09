@@ -126,6 +126,16 @@ h1 {
   font-weight: 700;
 }
 
+/* ── Voice warning ── */
+.voice-warning {
+  background: #fff3cd;
+  color: #856404;
+  border-bottom: 1px solid #ffeaa7;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
 /* ── Grid ── */
 main {
   max-width: 1200px;

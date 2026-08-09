@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ベトナム語 頻出1000語</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="header-top">
+        <h1>ベトナム語 頻出1000語</h1>
+        <div class="progress-info">
+          <span id="progressText">0 / 25 語習得</span>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+          </div>
+        </div>
+      </div>
+      <div class="controls">
+        <input type="search" id="searchInput" placeholder="ベトナム語・日本語で検索...">
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">すべて</button>
+          <button class="filter-btn" data-filter="unlearned">未習得</button>
+          <button class="filter-btn" data-filter="learned">習得済み</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="word-grid" id="wordGrid"></div>
+    <p class="empty-msg" id="emptyMsg" hidden>該当する単語が見つかりません。</p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

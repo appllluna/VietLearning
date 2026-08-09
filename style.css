@@ -1,0 +1,352 @@
+:root {
+  --primary: #da251d;
+  --primary-light: #fdecea;
+  --accent: #ffcd00;
+  --text: #1a1a1a;
+  --text-muted: #777;
+  --border: #e0e0e0;
+  --bg: #f4f4f4;
+  --card-bg: #ffffff;
+  --learned-bg: #f0faf1;
+  --learned-border: #43a047;
+  --radius: 10px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+header {
+  background: var(--primary);
+  color: #fff;
+  padding: 1.25rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.progress-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+#progressText {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.progress-bar-bg {
+  width: 160px;
+  height: 6px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.35s ease;
+}
+
+.controls {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+#searchInput {
+  flex: 1;
+  min-width: 160px;
+  padding: 0.5rem 0.85rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: rgba(255,255,255,0.9);
+  color: var(--text);
+  outline: none;
+}
+
+#searchInput:focus { background: #fff; }
+
+.filter-group { display: flex; gap: 0.35rem; }
+
+.filter-btn {
+  padding: 0.4rem 0.9rem;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-radius: 6px;
+  background: transparent;
+  color: #fff;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.filter-btn:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: #fff;
+}
+
+.filter-btn.active {
+  background: #fff;
+  color: var(--primary);
+  border-color: #fff;
+  font-weight: 700;
+}
+
+/* ── Grid ── */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Card ── */
+.word-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.word-card:hover {
+  box-shadow: 0 4px 18px rgba(0,0,0,0.11);
+}
+
+.word-card.learned {
+  border-color: var(--learned-border);
+  background: var(--learned-bg);
+}
+
+/* Card header (clickable) */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.card-rank {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  min-width: 2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-words { flex: 1; }
+
+.word-vi {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.word-card.learned .word-vi { color: var(--learned-border); }
+
+.word-ja {
+  font-size: 0.88rem;
+  margin-top: 0.15rem;
+}
+
+.word-en {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.05rem;
+}
+
+.pos-tag {
+  font-size: 0.68rem;
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.word-card.learned .pos-tag {
+  background: #d4edda;
+  color: #276b2e;
+}
+
+.expand-icon {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.word-card.expanded .expand-icon { transform: rotate(180deg); }
+
+/* Card footer */
+.card-footer {
+  padding: 0 1rem 0.8rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.learned-btn {
+  padding: 0.28rem 0.9rem;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  font-size: 0.78rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+
+.learned-btn:hover {
+  border-color: var(--learned-border);
+  color: var(--learned-border);
+}
+
+.word-card.learned .learned-btn {
+  background: var(--learned-border);
+  border-color: var(--learned-border);
+  color: #fff;
+}
+
+/* Example section */
+.card-example {
+  display: none;
+  padding: 0.75rem 1rem 0.9rem;
+  border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.018);
+}
+
+.word-card.expanded .card-example { display: block; }
+
+.word-card.learned .card-example {
+  border-top-color: #b2dfb4;
+  background: rgba(67,160,71,0.04);
+}
+
+.example-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+/* Interlinear */
+.interlinear {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem 0.85rem;
+  margin-bottom: 0.65rem;
+}
+
+.il-token {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.il-vi {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.il-en {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.il-ja {
+  font-size: 0.88rem;
+  color: var(--text);
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--border);
+}
+
+/* ── Speech button ── */
+.word-vi-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.example-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.speak-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.1rem 0.25rem;
+  border-radius: 4px;
+  line-height: 1;
+  opacity: 0.55;
+  transition: opacity 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+
+.speak-btn:hover { opacity: 1; background: rgba(0,0,0,0.06); }
+
+.speak-btn.speaking {
+  opacity: 1;
+  animation: speak-pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes speak-pulse {
+  from { opacity: 0.45; transform: scale(0.95); }
+  to   { opacity: 1;    transform: scale(1.1); }
+}
+
+/* Empty state */
+.empty-msg {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}

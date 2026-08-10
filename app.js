@@ -582,6 +582,7 @@ function renderCards() {
         <div class="example-header">
           <span class="example-label">例文</span>
           <button class="speak-btn" data-text="${sentence}" title="例文を読み上げ">🔊</button>
+          <button class="copy-btn" data-text="${sentence}" title="ベトナム語文をコピー">📋</button>
         </div>
         <div class="interlinear">${tokens}</div>
         <div class="il-ja">→ ${ex.ja}</div>
@@ -618,6 +619,25 @@ function renderCards() {
       btn.addEventListener('click', e => {
         e.stopPropagation();
         speak(btn.dataset.text, btn);
+      });
+    });
+
+    card.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async e => {
+        e.stopPropagation();
+        try {
+          await navigator.clipboard.writeText(btn.dataset.text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = btn.dataset.text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        btn.textContent = '✓';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = '📋'; btn.classList.remove('copied'); }, 1500);
       });
     });
 

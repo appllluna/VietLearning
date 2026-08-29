@@ -923,4 +923,4 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 });
 
 // ── Init ──
-renderCards();
+if (document.getElementById('wordGrid')) renderCards();

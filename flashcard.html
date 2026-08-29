@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ベトナム語 フラッシュカード</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="header-top">
+        <h1>ベトナム語 フラッシュカード</h1>
+      </div>
+    </div>
+  </header>
+
+  <nav class="page-nav">
+    <a href="index.html">📚 単語</a>
+    <a href="flashcard.html" class="active">🃏 フラッシュカード</a>
+    <a href="phrases.html">💬 会話・表現</a>
+    <a href="basics.html">🔢 基礎表現</a>
+    <a href="tones.html">🎵 声調</a>
+  </nav>
+
+  <div class="voice-warning" id="voiceWarning" hidden></div>
+
+  <div class="fc-wrap">
+    <div class="fc-filter-bar">
+      <button class="filter-btn active" data-filter="all">すべて</button>
+      <button class="filter-btn" data-filter="unlearned">未習得</button>
+      <button class="filter-btn" data-filter="learned">習得済み</button>
+      <button class="fc-shuffle-btn" id="shuffleBtn">🔀 シャッフル</button>
+    </div>
+
+    <div class="fc-progress">
+      <span id="fcProgressText">1 / 200</span>
+    </div>
+    <div class="fc-progress-bar-bg">
+      <div class="fc-progress-bar-fill" id="fcProgressBar"></div>
+    </div>
+
+    <div class="fc-scene">
+      <div class="fc-card" id="fcCard">
+        <div class="fc-face fc-front" id="fcFront"></div>
+        <div class="fc-face fc-back" id="fcBack"></div>
+      </div>
+    </div>
+
+    <div class="fc-nav" id="fcNav"></div>
+  </div>
+
+  <!-- app.js で WORDS を定義してから flashcard.js を読み込む -->
+  <script src="app.js"></script>
+  <script src="flashcard.js"></script>
+</body>
+</html>

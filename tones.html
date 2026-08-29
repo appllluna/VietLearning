@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ベトナム語 声調</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="header-top">
+        <h1>ベトナム語 6声調</h1>
+      </div>
+    </div>
+  </header>
+
+  <nav class="page-nav">
+    <a href="index.html">📚 単語</a>
+    <a href="flashcard.html">🃏 フラッシュカード</a>
+    <a href="phrases.html">💬 会話・表現</a>
+    <a href="basics.html">🔢 基礎表現</a>
+    <a href="tones.html" class="active">🎵 声調</a>
+  </nav>
+
+  <div class="voice-warning" id="voiceWarning" hidden></div>
+
+  <div class="tones-wrap">
+    <div class="tones-intro">
+      ベトナム語には <strong>6つの声調（thanh điệu）</strong>があり、同じ音節でも声調が違うと<strong>まったく別の意味</strong>になります。<br>
+      例：<strong>ma / mà / má / mả / mã / mạ</strong> はすべて異なる語です。<br>
+      声調は母音（または音節核）の上下に付く記号で表されます。🔊ボタンで実際の発音を確認してください。
+    </div>
+
+    <div class="tone-grid" id="toneGrid"></div>
+  </div>
+
+  <script>
+  const TONES = [
+    {
+      name_vi: 'Thanh ngang',
+      name_ja: '平声（ひらごえ）',
+      mark: 'a',
+      mark_display: 'a',
+      number: '①',
+      desc: '中くらいの高さで平らに発音。声調記号なし。北部では少し下がる。',
+      example_vi: 'ma',
+      example_ja: '幽霊',
+      example_en: 'ghost',
+      svg_path: 'M 8,26 L 92,26',
+      color: '#1565c0',
+    },
+    {
+      name_vi: 'Thanh huyền',
+      name_ja: '重声（じゅうごえ）',
+      mark: 'à',
+      mark_display: 'à',
+      number: '②',
+      desc: '低めから緩やかに下がる。声調記号は ` （グレーブアクセント）。',
+      example_vi: 'mà',
+      example_ja: 'しかし',
+      example_en: 'but',
+      svg_path: 'M 8,18 L 92,40',
+      color: '#6a1fa0',
+    },
+    {
+      name_vi: 'Thanh sắc',
+      name_ja: '銳声（えいごえ）',
+      mark: 'á',
+      mark_display: 'á',
+      number: '③',
+      desc: '低めから高く上がる。元気よく発音。声調記号は ´ （アキュートアクセント）。',
+      example_vi: 'má',
+      example_ja: 'ほっぺた',
+      example_en: 'cheek',
+      svg_path: 'M 8,42 L 92,10',
+      color: '#c62828',
+    },
+    {
+      name_vi: 'Thanh hỏi',
+      name_ja: '問声（といごえ）',
+      mark: 'ả',
+      mark_display: 'ả',
+      number: '④',
+      desc: '中からいったん下がり、最後に上がる（Uの字型）。声調記号は ̉ 。',
+      example_vi: 'mả',
+      example_ja: 'お墓',
+      example_en: 'tomb',
+      svg_path: 'M 8,22 C 30,34 55,40 75,34 C 83,30 90,20 92,12',
+      color: '#2e7d32',
+    },
+    {
+      name_vi: 'Thanh ngã',
+      name_ja: '跌声（てつごえ）',
+      mark: 'ã',
+      mark_display: 'ã',
+      number: '⑤',
+      desc: '上がりながら途中で喉が止まる（声門閉鎖）。声調記号は ˜ 。南部では③と区別しないことも。',
+      example_vi: 'mã',
+      example_ja: '馬・コード',
+      example_en: 'horse / code',
+      svg_path: 'M 8,34 L 42,18 M 50,20 L 92,6',
+      color: '#e65100',
+    },
+    {
+      name_vi: 'Thanh nặng',
+      name_ja: '入声（にゅうごえ）',
+      mark: 'ạ',
+      mark_display: 'ạ',
+      number: '⑥',
+      desc: '低く重く落ちる。最後は詰まって短く終わる。声調記号は ̣ （下付き点）。',
+      example_vi: 'mạ',
+      example_ja: '稲の苗',
+      example_en: 'rice seedling',
+      svg_path: 'M 8,16 L 72,44',
+      color: '#4e342e',
+    },
+  ];
+
+  // ── Speech ──
+  let viVoice = null;
+  function initVoices() {
+    const voices = speechSynthesis.getVoices();
+    if (!voices.length) return;
+    viVoice =
+      voices.find(v => v.lang.startsWith('vi') && v.name.toLowerCase().includes('google')) ||
+      voices.find(v => v.lang.startsWith('vi')) || null;
+    const el = document.getElementById('voiceWarning');
+    if (el) { el.hidden = !!viVoice; if (!viVoice) el.textContent = '⚠️ ベトナム語音声（vi-VN）が見つかりません。Chromeを使用してください。'; }
+  }
+  if (window.speechSynthesis) { speechSynthesis.addEventListener('voiceschanged', initVoices); initVoices(); }
+
+  function speak(text, btn) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'vi-VN';
+    if (viVoice) utt.voice = viVoice;
+    utt.rate = 0.75;
+    if (btn) { btn.classList.add('speaking'); utt.onend = () => btn.classList.remove('speaking'); utt.onerror = () => btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(utt);
+  }
+
+  // ── Render ──
+  function svgDiagram(path, color) {
+    const isBreak = path.includes('M 50'); // ngã の途中切れ
+    return `
+      <svg class="tone-diagram" viewBox="0 0 100 52" xmlns="http://www.w3.org/2000/svg">
+        <!-- 背景グリッド -->
+        <line x1="0" y1="10" x2="100" y2="10" stroke="#eee" stroke-width="1"/>
+        <line x1="0" y1="26" x2="100" y2="26" stroke="#eee" stroke-width="1"/>
+        <line x1="0" y1="42" x2="100" y2="42" stroke="#eee" stroke-width="1"/>
+        <text x="2" y="13" font-size="7" fill="#ccc">高</text>
+        <text x="2" y="29" font-size="7" fill="#ccc">中</text>
+        <text x="2" y="45" font-size="7" fill="#ccc">低</text>
+        <!-- 声調曲線 -->
+        <path d="${path}" stroke="${color}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        ${isBreak ? `<circle cx="46" cy="19" r="2.5" fill="${color}"/>` : ''}
+      </svg>`;
+  }
+
+  const grid = document.getElementById('toneGrid');
+  grid.innerHTML = TONES.map((t, i) => `
+    <div class="tone-card">
+      <div class="tone-header">
+        <div>
+          <div class="tone-name-ja">${t.number} ${t.name_ja}</div>
+          <div class="tone-name-vi">${t.name_vi}</div>
+        </div>
+        <div class="tone-mark" style="color:${t.color}">${t.mark_display}</div>
+      </div>
+      ${svgDiagram(t.svg_path, t.color)}
+      <div class="tone-example-row">
+        <span class="tone-ex-vi" style="color:${t.color}">${t.example_vi}</span>
+        <div>
+          <div class="tone-ex-ja">${t.example_ja}</div>
+          <div class="tone-ex-en">${t.example_en}</div>
+        </div>
+        <button class="speak-btn" data-text="${t.example_vi}" title="発音">🔊</button>
+      </div>
+      <div class="tone-desc">${t.desc}</div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.speak-btn').forEach(btn => {
+    btn.addEventListener('click', () => speak(btn.dataset.text, btn));
+  });
+
+  // ── 6声調まとめ読み上げ ──
+  // 全単語を連続再生するボタンは省略（音声が前後するため）
+  </script>
+</body>
+</html>
